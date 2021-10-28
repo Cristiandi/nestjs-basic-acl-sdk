@@ -1,5 +1,5 @@
 {
-  "name": "basic-acl-sdk",
+  "name": "nestjs-basic-acl-sdk",
   "version": "0.0.1",
   "description": "sdk for basic acl api",
   "author": "Cristiandi <cristiandavidippolito@gmail.com>",
