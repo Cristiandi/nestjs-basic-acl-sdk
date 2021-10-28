@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "sdk for basic acl api",
   "author": "Cristiandi <cristiandavidippolito@gmail.com>",
-  "homepage": "https://github.com/Cristiandi/basic-acl-api",
+  "homepage": "https://github.com/Cristiandi/nestjs-basic-acl-sdk",
   "license": "MIT",
   "keywords": [
     "NestJS"
@@ -19,7 +19,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cristiandi/basic-acl-api.git"
+    "url": "git+https://github.com/Cristiandi/nestjs-basic-acl-sdk.git"
   },
   "scripts": {
     "build": "tsc --build tsconfig.build.json",
@@ -27,41 +27,41 @@
     "test": "jest"
   },
   "bugs": {
-    "url": "https://github.com/Cristiandi/basic-acl-api/issues"
+    "url": "https://github.com/Cristiandi/nestjs-basic-acl-sdk/issues"
   },
   "dependencies": {
-    "@nestjs/common": "^8.0.0",
-    "@nestjs/core": "^8.0.0",
-    "@nestjs/platform-express": "^8.0.0",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "@nestjs/common": "8.1.2",
+    "@nestjs/core": "8.1.2",
+    "@nestjs/platform-express": "8.1.2",
+    "reflect-metadata": "0.1.13",
+    "rimraf": "3.0.2",
+    "rxjs": "7.4.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^8.0.0",
+    "@nestjs/cli": "8.1.4",
     "@nestjs/graphql": "9.1.1",
-    "@nestjs/schematics": "^8.0.0",
-    "@nestjs/testing": "^8.0.0",
-    "@types/express": "^4.17.13",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.0.0",
-    "@types/supertest": "^2.0.11",
-    "@typescript-eslint/eslint-plugin": "^4.28.2",
-    "@typescript-eslint/parser": "^4.28.2",
+    "@nestjs/schematics": "8.0.4",
+    "@nestjs/testing": "8.1.2",
+    "@types/express": "4.17.13",
+    "@types/jest": "27.0.2",
+    "@types/node": "16.0.0",
+    "@types/supertest": "2.0.11",
+    "@typescript-eslint/eslint-plugin": "5.2.0",
+    "@typescript-eslint/parser": "5.2.0",
     "apollo-server-express": "3.4.0",
-    "eslint": "^7.30.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
+    "eslint": "8.1.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-prettier": "4.0.0",
     "graphql": "15.7.0",
     "graphql-request": "3.6.1",
-    "jest": "^27.0.6",
-    "prettier": "^2.3.2",
-    "supertest": "^6.1.3",
-    "ts-jest": "^27.0.3",
-    "ts-loader": "^9.2.3",
-    "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.1",
-    "typescript": "^4.3.5"
+    "jest": "27.3.1",
+    "prettier": "2.4.1",
+    "supertest": "6.1.6",
+    "ts-jest": "27.0.7",
+    "ts-loader": "9.2.6",
+    "ts-node": "10.4.0",
+    "tsconfig-paths": "03.11.0",
+    "typescript": "4.3.5"
   },
   "publishConfig": {
     "access": "public"
