@@ -1,4 +1,4 @@
-import { BasicACLConfig } from './basic-acl.interfaces';
+import { BasicACLOptions } from './basic-acl.interfaces';
 import { ChangeEmailInput } from './dto/change-email-input.dto';
 import { ChangePasswordInput } from './dto/change-password-input.dto';
 import { ChangePhoneInput } from './dto/change-phone-input.dto';
@@ -9,7 +9,7 @@ import { SendResetPasswordEmailInput } from './dto/send-reset-password-email-inp
 export declare class BasicAclService {
     private readonly options;
     private graphQLClient;
-    constructor(options: BasicACLConfig);
+    constructor(options: BasicACLOptions);
     private initGraphQLClient;
     createUser(input: CreateUserInput): Promise<any>;
     getUser(input: GetUserInput): Promise<any>;
