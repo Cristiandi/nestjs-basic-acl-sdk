@@ -13,7 +13,6 @@ import { BasicAclService } from './basic-acl.service';
 @Module({})
 export class BasicAclModule {
   public static register(options: BasicACLOptions): DynamicModule {
-    console.log('register', options);
     return {
       module: BasicAclModule,
       providers: [
@@ -30,7 +29,9 @@ export class BasicAclModule {
   public static registerAsync(options: BasicACLAsyncOptions): DynamicModule {
     return {
       module: BasicAclModule,
-      providers: [...this.createProviders(options)],
+      imports: options.imports || [],
+      providers: [BasicAclService, ...this.createProviders(options)],
+      exports: [BasicAclService],
     };
   }
 
