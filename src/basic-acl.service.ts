@@ -6,7 +6,7 @@ import {
   BASIC_ACL_API_BASE_URL,
 } from './basic-acl.constants';
 
-import { BasicACLConfig } from './basic-acl.interfaces';
+import { BasicACLOptions } from './basic-acl.interfaces';
 
 import { ChangeEmailInput } from './dto/change-email-input.dto';
 import { ChangePasswordInput } from './dto/change-password-input.dto';
@@ -21,7 +21,7 @@ export class BasicAclService {
   private graphQLClient: GraphQLClient;
 
   constructor(
-    @Inject(BASIC_ACL_CONFIG_TOKEN) private readonly options: BasicACLConfig,
+    @Inject(BASIC_ACL_CONFIG_TOKEN) private readonly options: BasicACLOptions,
   ) {
     this.graphQLClient = this.initGraphQLClient();
   }

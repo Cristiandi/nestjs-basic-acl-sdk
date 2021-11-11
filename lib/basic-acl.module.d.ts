@@ -1,12 +1,8 @@
-import { BasicACLConfig } from './basic-acl.interfaces';
-import { BasicAclService } from './basic-acl.service';
+import { DynamicModule } from '@nestjs/common';
+import { BasicACLOptions, BasicACLAsyncOptions } from './basic-acl.interfaces';
 export declare class BasicAclModule {
-    static register(config: BasicACLConfig): {
-        module: typeof BasicAclModule;
-        providers: (typeof BasicAclService | {
-            provide: symbol;
-            useValue: BasicACLConfig;
-        })[];
-        exports: (typeof BasicAclService)[];
-    };
+    static register(options: BasicACLOptions): DynamicModule;
+    static registerAsync(options: BasicACLAsyncOptions): DynamicModule;
+    private static createProviders;
+    private static createOptionsProvider;
 }
