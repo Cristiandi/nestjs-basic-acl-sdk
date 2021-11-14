@@ -6,7 +6,10 @@
   "homepage": "https://github.com/Cristiandi/nestjs-basic-acl-sdk",
   "license": "MIT",
   "keywords": [
-    "NestJS"
+    "NestJS",
+    "TypeScript",
+    "Access Control List",
+    "GraphQL"
   ],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
