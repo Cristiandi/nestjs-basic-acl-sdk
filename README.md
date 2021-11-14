@@ -3,6 +3,14 @@
 # Table of Contents
 - [Nestjs Basic ACL SDK](#nestjs-basic-acl-sdk)
 - [Table of Contents](#table-of-contents)
+- [Description](#description)
+- [Motivation](#motivation)
+- [Requirements](#requirements)
+- [Usage](#usage)
+    - [Install](#install)
+    - [Module Initialization](#module-initialization)
+    - [Decorators](#decorators)
+    - [Guard](#guard)
 
 # Description
 This nestjs module offers a simple way to use some functionalities from the [basic-acl-api](https://github.com/Cristiandi/basic-acl-api).
