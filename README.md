@@ -11,6 +11,7 @@
     - [Module Initialization](#module-initialization)
     - [Decorators](#decorators)
     - [Guard](#guard)
+    - [Creating users]()
 
 # Description
 This nestjs module offers a simple way to use some functionalities from the [basic-acl-api](https://github.com/Cristiandi/basic-acl-api).
@@ -248,3 +249,114 @@ export class AuthorizationGuard implements CanActivate {
 ```
 
 _so in that guard implementation we're getting the information from the decorators and also we're trying to get the token to make the permission check, using the `BasicAclService` (it's also included in the sdk)._
+
+## Users synchronization
+You probably noticed, the basic ACL is a system that needs to be well synchronized with the users in your own system to accomplish the permission verifications  and some other things, that why `BasicAclService` includes functions to create and get, update a user.
+
+### Creating a user
+```typescript
+public async create(createUserInput: CreateUserInput): Promise<User> {
+    const { phone, email, fullName, password } = createUserInput;
+
+    const existingByPhone = await this.getByOneField({
+      field: 'phone',
+      value: phone,
+      checkExisting: false,
+    });
+
+    if (existingByPhone) {
+      throw new PreconditionFailedException(`already exist an user with the phone ${phone}.`);
+    }
+
+    const existingByEmail = await this.getByOneField({
+      field: 'email',
+      value: email,
+      checkExisting: false,
+    });
+
+    if (existingByEmail) {
+      throw new PreconditionFailedException(`already exist an user with the email ${email}.`);
+    }
+
+    const aclUser = await this.basicAclService.createUser({
+      email,
+      password,
+      phone: `+57${phone}`,
+      roleCode: '02U', // TODO: use a parameter
+      sendEmail: true,
+      emailTemplateParams: {
+        fullName,
+      }
+    });
+
+    try {
+      const { authUid } = aclUser;
+
+      const created = this.repository.create({
+        email,
+        fullName,
+        phone,
+        authUid,
+      });
+
+      const saved = await this.repository.save(created);
+
+      return saved;
+    } catch (error) {
+      // TODO: delete the user in ACL
+      console.log('deleting the user in ACL');
+
+      throw error;
+    }
+  }
+```
+
+Maybe it's possible the user was previously created at the front, using other provider like google, github and so on...
+that's why you can use the `createUser` in this way:
+
+```typescript
+public async createFromAuthUid(
+  createUserFromAuthUidInput: CreateUserFromAuthUidInput
+): Promise<User> {
+  const { authUid, email, fullName = 'No assigned', phone } = createUserFromAuthUidInput;
+
+  const existing = await this.getByOneField({
+    field: 'authUid',
+    value: authUid,
+    checkExisting: false
+  });
+
+  if (existing) {
+    throw new PreconditionFailedException(`the user with authUid ${authUid} already exist.`);
+  }
+
+  const aclUser = await this.basicAclService.createUser({
+    authUid,
+    roleCode: '02U',// TODO: use a parameter
+    sendEmail: true,
+    emailTemplateParams: {
+      fullName,
+    }
+  });
+
+  try {
+    const { authUid } = aclUser;
+
+    const created = this.repository.create({
+      email,
+      fullName,
+      phone,
+      authUid,
+    });
+
+    const saved = await this.repository.save(created);
+
+    return saved;
+  } catch (error) {
+    // TODO: delete the user in ACL
+    console.log('deleting the user in ACL');
+
+    throw error;
+  }
+}
+```
