@@ -11,7 +11,7 @@
     - [Module Initialization](#module-initialization)
     - [Decorators](#decorators)
     - [Guard](#guard)
-    - [Creating users]()
+    - [Users synchronization](#users-synchronization)
 
 # Description
 This nestjs module offers a simple way to use some functionalities from the [basic-acl-api](https://github.com/Cristiandi/basic-acl-api).
@@ -303,8 +303,9 @@ public async create(createUserInput: CreateUserInput): Promise<User> {
 
       return saved;
     } catch (error) {
-      // TODO: delete the user in ACL
-      console.log('deleting the user in ACL');
+      await this.basicAclService.deleteUser({
+        authUid: aclUser.authUid,
+      });
 
       throw error;
     }
@@ -353,10 +354,16 @@ public async createFromAuthUid(
 
     return saved;
   } catch (error) {
-    // TODO: delete the user in ACL
-    console.log('deleting the user in ACL');
+    await this.basicAclService.deleteUser({
+      authUid: aclUser.authUid,
+    });
 
     throw error;
   }
 }
 ```
+
+_In these examples we're also using the `deleteUser` function when something goes wrong, but, it is up to you the way you implement the logic._
+
+# Contribute
+Please feel free to contribute, just open a issue or pr I'll be happy to review it.
