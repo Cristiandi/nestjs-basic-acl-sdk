@@ -280,6 +280,31 @@ export class BasicAclService {
     return changeUserPhone;
   }
 
+  public async deleteUser(input: GetUserInput) {
+    const mutation = gql`
+      mutation deleteUser($authUid: String!) {
+        deleteUser(getOneUserInput: { authUid: $authUid }) {
+          id
+          authUid
+          email
+          phone
+        }
+      }
+    `;
+
+    const { authUid } = input;
+
+    const variables = {
+      authUid,
+    };
+
+    const data = await this.graphQLClient.request(mutation, variables);
+
+    const { deleteUser } = data;
+
+    return deleteUser;
+  }
+
   public async checkPermission(input: CheckPermissionInput) {
     const query = gql`
       query checkPermission(
