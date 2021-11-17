@@ -17,5 +17,6 @@ export declare class BasicAclService {
     changeEmail(input: ChangeEmailInput): Promise<any>;
     changePassword(input: ChangePasswordInput): Promise<any>;
     changePhone(input: ChangePhoneInput): Promise<any>;
+    deleteUser(input: GetUserInput): Promise<any>;
     checkPermission(input: CheckPermissionInput): Promise<any>;
 }
