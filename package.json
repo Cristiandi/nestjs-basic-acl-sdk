@@ -33,7 +33,7 @@
     "url": "https://github.com/Cristiandi/nestjs-basic-acl-sdk/issues"
   },
   "dependencies": {
-    "graphql": "15.7.2",
+    "graphql": "16.1.0",
     "graphql-request": "3.7.0",
     "@nestjs/common": "8.2.3",
     "@nestjs/core": "8.2.3",
