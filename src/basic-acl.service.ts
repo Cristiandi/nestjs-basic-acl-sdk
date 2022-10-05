@@ -116,6 +116,12 @@ export class BasicAclService {
           phone
           createdAt
           updatedAt
+          assignedRoles {
+            role {
+              code
+              name
+            }
+          }
         }
       }
     `;
