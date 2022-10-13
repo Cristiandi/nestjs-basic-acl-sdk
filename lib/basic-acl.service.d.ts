@@ -1,4 +1,5 @@
 import { BasicACLOptions } from './basic-acl.interfaces';
+import { AssignRoleInput } from './dto/assign-user-role-input.dto';
 import { ChangeEmailInput } from './dto/change-email-input.dto';
 import { ChangePasswordInput } from './dto/change-password-input.dto';
 import { ChangePhoneInput } from './dto/change-phone-input.dto';
@@ -19,4 +20,5 @@ export declare class BasicAclService {
     changePhone(input: ChangePhoneInput): Promise<any>;
     deleteUser(input: GetUserInput): Promise<any>;
     checkPermission(input: CheckPermissionInput): Promise<any>;
+    assignRole(input: AssignRoleInput): Promise<any>;
 }

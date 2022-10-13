@@ -7,6 +7,7 @@ import {
 } from './basic-acl.constants';
 
 import { BasicACLOptions } from './basic-acl.interfaces';
+import { AssignRoleInput } from './dto/assign-user-role-input.dto';
 
 import { ChangeEmailInput } from './dto/change-email-input.dto';
 import { ChangePasswordInput } from './dto/change-password-input.dto';
@@ -350,5 +351,47 @@ export class BasicAclService {
     const { checkPermission } = data;
 
     return checkPermission;
+  }
+
+  public async assignRole(input: AssignRoleInput) {
+    const mutation = gql`
+      mutation assignUserRole(
+        $userAuthUid: String!
+        $roleUid: String
+        $companyUid: String
+        $roleCode: String
+      ) {
+        assignUserRole(
+          assignUserRoleInput: {
+            userAuthUid: $userAuthUid
+            roleUid: $roleUid
+            companyUid: $companyUid
+            roleCode: $roleCode
+          }
+        ) {
+          id
+        }
+      }
+    `;
+
+    const { companyUid } = this.options;
+    const { authUid, roleUid, roleCode } = input;
+
+    if ((!roleUid && !roleCode) || (roleUid && roleCode)) {
+      throw new Error('you must provide roleUid OR roleCode');
+    }
+
+    const variables = {
+      authUid,
+      roleUid,
+      companyUid: roleUid ? companyUid : undefined,
+      roleCode,
+    };
+
+    const data = await this.graphQLClient.request(mutation, variables);
+
+    const { assignUserRole } = data;
+
+    return assignUserRole;
   }
 }
