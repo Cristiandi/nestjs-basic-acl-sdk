@@ -383,7 +383,7 @@ export class BasicAclService {
     }
 
     const variables = {
-      authUid,
+      userAuthUid: authUid,
       roleUid,
       companyUid: roleUid ? companyUid : undefined,
       roleCode,
@@ -425,7 +425,7 @@ export class BasicAclService {
     }
 
     const variables = {
-      authUid,
+      userAuthUid: authUid,
       roleUid,
       companyUid: roleUid ? companyUid : undefined,
       roleCode,
