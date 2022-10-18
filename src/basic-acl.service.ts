@@ -16,6 +16,7 @@ import { CheckPermissionInput } from './dto/check-permission-input.dto';
 import { CreateUserInput } from './dto/create-user-input.dto';
 import { GetUserInput } from './dto/get-user-uid-input.dto';
 import { SendResetPasswordEmailInput } from './dto/send-reset-password-email-input.dto';
+import { UnassignRoleInput } from './dto/unassign-user-role-input.dto';
 
 @Injectable()
 export class BasicAclService {
@@ -393,5 +394,47 @@ export class BasicAclService {
     const { assignUserRole } = data;
 
     return assignUserRole;
+  }
+
+  public async unassignRole(input: UnassignRoleInput) {
+    const mutation = gql`
+      mutation unassignUserRole(
+        $userAuthUid: String!
+        $roleUid: String
+        $companyUid: String
+        $roleCode: String
+      ) {
+        unassignUserRole(
+          unassignUserRoleInput: {
+            userAuthUid: $userAuthUid
+            roleUid: $roleUid
+            companyUid: $companyUid
+            roleCode: $roleCode
+          }
+        ) {
+          id
+        }
+      }
+    `;
+
+    const { companyUid } = this.options;
+    const { authUid, roleUid, roleCode } = input;
+
+    if ((!roleUid && !roleCode) || (roleUid && roleCode)) {
+      throw new Error('you must provide roleUid OR roleCode');
+    }
+
+    const variables = {
+      authUid,
+      roleUid,
+      companyUid: roleUid ? companyUid : undefined,
+      roleCode,
+    };
+
+    const data = await this.graphQLClient.request(mutation, variables);
+
+    const { unassignUserRole } = data;
+
+    return unassignUserRole;
   }
 }
