@@ -382,12 +382,20 @@ export class BasicAclService {
       throw new Error('you must provide roleUid OR roleCode');
     }
 
-    const variables = {
-      userAuthUid: authUid,
-      roleUid,
-      companyUid: roleUid ? companyUid : undefined,
-      roleCode,
-    };
+    let variables;
+
+    if (roleUid) {
+      variables = {
+        userAuthUid: authUid,
+        roleUid,
+      };
+    } else {
+      variables = {
+        userAuthUid: authUid,
+        companyUid,
+        roleCode,
+      };
+    }
 
     const data = await this.graphQLClient.request(mutation, variables);
 
@@ -424,12 +432,20 @@ export class BasicAclService {
       throw new Error('you must provide roleUid OR roleCode');
     }
 
-    const variables = {
-      userAuthUid: authUid,
-      roleUid,
-      companyUid: roleUid ? companyUid : undefined,
-      roleCode,
-    };
+    let variables;
+
+    if (roleUid) {
+      variables = {
+        userAuthUid: authUid,
+        roleUid,
+      };
+    } else {
+      variables = {
+        userAuthUid: authUid,
+        companyUid,
+        roleCode,
+      };
+    }
 
     const data = await this.graphQLClient.request(mutation, variables);
 
