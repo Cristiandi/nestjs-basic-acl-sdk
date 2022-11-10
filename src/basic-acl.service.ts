@@ -17,6 +17,8 @@ import { CreateUserInput } from './dto/create-user-input.dto';
 import { GetUserInput } from './dto/get-user-uid-input.dto';
 import { SendResetPasswordEmailInput } from './dto/send-reset-password-email-input.dto';
 import { UnassignRoleInput } from './dto/unassign-user-role-input.dto';
+import { GetUsersByAuthUidsInput } from './dto/get-users-by-auth-uids-input.dto';
+import { GetUsersByAuthUidsOutput } from './dto/get-users-by-auth-uids-output.dto';
 
 @Injectable()
 export class BasicAclService {
@@ -452,5 +454,42 @@ export class BasicAclService {
     const { unassignUserRole } = data;
 
     return unassignUserRole;
+  }
+
+  public async getUsersByAuthUids(
+    input: GetUsersByAuthUidsInput,
+  ): Promise<GetUsersByAuthUidsOutput[]> {
+    const query = gql`
+      query getUsersByAuthUids($authUids: [String!]!) {
+        getUsersByAuthUids(getUsersByAuthUidsInput: { authUids: $authUids }) {
+          id
+          authUid
+          email
+          phone
+          assignedRoles {
+            role {
+              id
+              uid
+              code
+              name
+              createdAt
+              updatedAt
+            }
+          }
+        }
+      }
+    `;
+
+    const { authUids } = input;
+
+    const variables = {
+      authUids,
+    };
+
+    const data = await this.graphQLClient.request(query, variables);
+
+    const { getUsersByAuthUids } = data;
+
+    return getUsersByAuthUids;
   }
 }

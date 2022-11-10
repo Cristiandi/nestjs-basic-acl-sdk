@@ -8,6 +8,8 @@ import { CreateUserInput } from './dto/create-user-input.dto';
 import { GetUserInput } from './dto/get-user-uid-input.dto';
 import { SendResetPasswordEmailInput } from './dto/send-reset-password-email-input.dto';
 import { UnassignRoleInput } from './dto/unassign-user-role-input.dto';
+import { GetUsersByAuthUidsInput } from './dto/get-users-by-auth-uids-input.dto';
+import { GetUsersByAuthUidsOutput } from './dto/get-users-by-auth-uids-output.dto';
 export declare class BasicAclService {
     private readonly options;
     private graphQLClient;
@@ -23,4 +25,5 @@ export declare class BasicAclService {
     checkPermission(input: CheckPermissionInput): Promise<any>;
     assignRole(input: AssignRoleInput): Promise<any>;
     unassignRole(input: UnassignRoleInput): Promise<any>;
+    getUsersByAuthUids(input: GetUsersByAuthUidsInput): Promise<GetUsersByAuthUidsOutput[]>;
 }
