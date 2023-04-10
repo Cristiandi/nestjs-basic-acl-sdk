@@ -7,16 +7,26 @@ import {
 } from './basic-acl.constants';
 
 import { BasicACLOptions } from './basic-acl.interfaces';
-import { AssignRoleInput } from './dto/assign-user-role-input.dto';
 
-import { ChangeEmailInput } from './dto/change-email-input.dto';
-import { ChangePasswordInput } from './dto/change-password-input.dto';
-import { ChangePhoneInput } from './dto/change-phone-input.dto';
-import { CheckPermissionInput } from './dto/check-permission-input.dto';
 import { CreateUserInput } from './dto/create-user-input.dto';
+import { CreateUserOutput } from './dto/create-user-output.dto';
 import { GetUserInput } from './dto/get-user-uid-input.dto';
+import { GetUserOutput } from './dto/get-user-output.dto';
 import { SendResetPasswordEmailInput } from './dto/send-reset-password-email-input.dto';
+import { SendResetPasswordOutput } from './dto/send-reset-password-output.dto';
+import { ChangeEmailInput } from './dto/change-email-input.dto';
+import { ChangeEmailOutput } from './dto/change-email-output.dto';
+import { ChangePasswordInput } from './dto/change-password-input.dto';
+import { ChangePasswordOutput } from './dto/change-password-output.dto';
+import { ChangePhoneInput } from './dto/change-phone-input.dto';
+import { ChangePhoneOutput } from './dto/change-phone-output.dto';
+import { DeleteUserOutput } from './dto/delete-user-output.dto';
+import { CheckPermissionInput } from './dto/check-permission-input.dto';
+import { CheckPermissionOutput } from './dto/check-permission-output.dto';
+import { AssignRoleInput } from './dto/assign-user-role-input.dto';
+import { AssignRoleOutput } from './dto/assign-role-output.dto';
 import { UnassignRoleInput } from './dto/unassign-user-role-input.dto';
+import { UnassignUserRoleOutput } from './dto/unassign-user-role-output.dto';
 import { GetUsersByAuthUidsInput } from './dto/get-users-by-auth-uids-input.dto';
 import { GetUsersByAuthUidsOutput } from './dto/get-users-by-auth-uids-output.dto';
 
@@ -45,7 +55,7 @@ export class BasicAclService {
     return graphQLClient;
   }
 
-  public async createUser(input: CreateUserInput) {
+  public async createUser(input: CreateUserInput): Promise<CreateUserOutput> {
     const mutation = gql`
       mutation createUser(
         $companyUid: String!
@@ -102,7 +112,7 @@ export class BasicAclService {
       emailTemplateParams,
     };
 
-    const { createUser } = await this.graphQLClient.request(
+    const { createUser } = await this.graphQLClient.request<any>(
       mutation,
       variables,
     );
@@ -110,7 +120,7 @@ export class BasicAclService {
     return createUser;
   }
 
-  public async getUser(input: GetUserInput) {
+  public async getUser(input: GetUserInput): Promise<GetUserOutput> {
     const query = gql`
       query getOneUser($authUid: String!) {
         getOneUser(getOneUserInput: { authUid: $authUid }) {
@@ -136,14 +146,16 @@ export class BasicAclService {
       authUid,
     };
 
-    const data = await this.graphQLClient.request(query, variables);
+    const data = await this.graphQLClient.request<any>(query, variables);
 
     const { getOneUser } = data;
 
     return getOneUser;
   }
 
-  public async sendResetPasswordEmail(input: SendResetPasswordEmailInput) {
+  public async sendResetPasswordEmail(
+    input: SendResetPasswordEmailInput,
+  ): Promise<SendResetPasswordOutput> {
     const mutation = gql`
       mutation sendResetPasswordEmail(
         $companyUid: String!
@@ -171,14 +183,16 @@ export class BasicAclService {
       emailTemplateParams,
     };
 
-    const data = await this.graphQLClient.request(mutation, variables);
+    const data = await this.graphQLClient.request<any>(mutation, variables);
 
     const { sendResetUserPasswordEmail } = data;
 
     return sendResetUserPasswordEmail;
   }
 
-  public async changeEmail(input: ChangeEmailInput) {
+  public async changeEmail(
+    input: ChangeEmailInput,
+  ): Promise<ChangeEmailOutput> {
     const mutation = gql`
       mutation changeUserEmail(
         $authUid: String!
@@ -210,14 +224,16 @@ export class BasicAclService {
       emailTemplateParams,
     };
 
-    const data = await this.graphQLClient.request(mutation, variables);
+    const data = await this.graphQLClient.request<any>(mutation, variables);
 
     const { changeUserEmail } = data;
 
     return changeUserEmail;
   }
 
-  public async changePassword(input: ChangePasswordInput) {
+  public async changePassword(
+    input: ChangePasswordInput,
+  ): Promise<ChangePasswordOutput> {
     const mutation = gql`
       mutation changeUserPassword(
         $authUid: String!
@@ -237,9 +253,8 @@ export class BasicAclService {
           authUid
           email
           phone
-          company {
-            id
-          }
+          createdAt
+          updatedAt
         }
       }
     `;
@@ -253,14 +268,16 @@ export class BasicAclService {
       emailTemplateParams,
     };
 
-    const data = await this.graphQLClient.request(mutation, variables);
+    const data = await this.graphQLClient.request<any>(mutation, variables);
 
     const { changeUserPassword } = data;
 
     return changeUserPassword;
   }
 
-  public async changePhone(input: ChangePhoneInput) {
+  public async changePhone(
+    input: ChangePhoneInput,
+  ): Promise<ChangePhoneOutput> {
     const mutation = gql`
       mutation changeUserPhone($authUid: String!, $phone: String!) {
         changeUserPhone(
@@ -283,14 +300,14 @@ export class BasicAclService {
       phone,
     };
 
-    const data = await this.graphQLClient.request(mutation, variables);
+    const data = await this.graphQLClient.request<any>(mutation, variables);
 
     const { changeUserPhone } = data;
 
     return changeUserPhone;
   }
 
-  public async deleteUser(input: GetUserInput) {
+  public async deleteUser(input: GetUserInput): Promise<DeleteUserOutput> {
     const mutation = gql`
       mutation deleteUser($authUid: String!) {
         deleteUser(getOneUserInput: { authUid: $authUid }) {
@@ -298,6 +315,8 @@ export class BasicAclService {
           authUid
           email
           phone
+          createdAt
+          updatedAt
         }
       }
     `;
@@ -308,14 +327,16 @@ export class BasicAclService {
       authUid,
     };
 
-    const data = await this.graphQLClient.request(mutation, variables);
+    const data = await this.graphQLClient.request<any>(mutation, variables);
 
     const { deleteUser } = data;
 
     return deleteUser;
   }
 
-  public async checkPermission(input: CheckPermissionInput) {
+  public async checkPermission(
+    input: CheckPermissionInput,
+  ): Promise<CheckPermissionOutput> {
     const query = gql`
       query checkPermission(
         $companyUid: String!
@@ -349,14 +370,21 @@ export class BasicAclService {
       apiKey,
     };
 
-    const data = await this.graphQLClient.request(query, variables);
+    const data = await this.graphQLClient.request<any>(query, variables);
 
     const { checkPermission } = data;
 
     return checkPermission;
   }
 
-  public async assignRole(input: AssignRoleInput) {
+  public async assignRole(input: AssignRoleInput): Promise<AssignRoleOutput> {
+    const { companyUid } = this.options;
+    const { authUid, roleUid, roleCode } = input;
+
+    if ((!roleUid && !roleCode) || (roleUid && roleCode)) {
+      throw new Error('you must provide roleUid OR roleCode');
+    }
+
     const mutation = gql`
       mutation assignUserRole(
         $userAuthUid: String!
@@ -377,13 +405,6 @@ export class BasicAclService {
       }
     `;
 
-    const { companyUid } = this.options;
-    const { authUid, roleUid, roleCode } = input;
-
-    if ((!roleUid && !roleCode) || (roleUid && roleCode)) {
-      throw new Error('you must provide roleUid OR roleCode');
-    }
-
     let variables;
 
     if (roleUid) {
@@ -399,14 +420,23 @@ export class BasicAclService {
       };
     }
 
-    const data = await this.graphQLClient.request(mutation, variables);
+    const data = await this.graphQLClient.request<any>(mutation, variables);
 
     const { assignUserRole } = data;
 
     return assignUserRole;
   }
 
-  public async unassignRole(input: UnassignRoleInput) {
+  public async unassignRole(
+    input: UnassignRoleInput,
+  ): Promise<UnassignUserRoleOutput> {
+    const { companyUid } = this.options;
+    const { authUid, roleUid, roleCode } = input;
+
+    if ((!roleUid && !roleCode) || (roleUid && roleCode)) {
+      throw new Error('you must provide roleUid OR roleCode');
+    }
+
     const mutation = gql`
       mutation unassignUserRole(
         $userAuthUid: String!
@@ -427,13 +457,6 @@ export class BasicAclService {
       }
     `;
 
-    const { companyUid } = this.options;
-    const { authUid, roleUid, roleCode } = input;
-
-    if ((!roleUid && !roleCode) || (roleUid && roleCode)) {
-      throw new Error('you must provide roleUid OR roleCode');
-    }
-
     let variables;
 
     if (roleUid) {
@@ -449,7 +472,7 @@ export class BasicAclService {
       };
     }
 
-    const data = await this.graphQLClient.request(mutation, variables);
+    const data = await this.graphQLClient.request<any>(mutation, variables);
 
     const { unassignUserRole } = data;
 
@@ -486,7 +509,7 @@ export class BasicAclService {
       authUids,
     };
 
-    const data = await this.graphQLClient.request(query, variables);
+    const data = await this.graphQLClient.request<any>(query, variables);
 
     const { getUsersByAuthUids } = data;
 
